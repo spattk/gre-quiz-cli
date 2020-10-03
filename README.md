@@ -8,9 +8,6 @@ A very small utility tool to prepare for your vocabs for your GRE.
 3. More customizations coming soon !!!
 4. Effortless
 
-<br>
-<hr>
-<br>
 
 ## Steps to run
 
