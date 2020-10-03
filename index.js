@@ -37,6 +37,11 @@ if (!fs.existsSync(quizPath)) {
 indexes = [];
 readXlsxFile(quizPath).then((rows) => {
 
+    quizLen = 10
+    if (process.argv[2]) {
+        quizLen = Number(process.argv[2])
+    }
+    
     rows.forEach((row, index)=> {
         indexes.push(index);
         questions.push(row[0]);
@@ -46,7 +51,7 @@ readXlsxFile(quizPath).then((rows) => {
     shuffle(indexes);
     len = indexes.length;
 
-    indexes = indexes.slice(0,10)
+    indexes = indexes.slice(0, quizLen)
     indexes.forEach((index)=> {
         choices = [];
         choices.push(correct_answers[index]);
