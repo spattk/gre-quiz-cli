@@ -1,90 +1,87 @@
 const readXlsxFile = require('read-excel-file/node');
 const inquirer = require('inquirer');
 const prompt = require('prompt-sync')();
+const fs = require('fs')
+const path = require('path');
+const { dir } = require('console');
+const { exit } = require('process');
 
 questions = [];
-corr_answer = [];
+correct_answers = [];
 answers = [];
-prompt_arr = [];
+prompt_array = [];
 score = 0;
 
 function shuffle(arr) {
-    var ctr = arr.length, temp, index;
-
-// While there are elements in the array
+    let ctr = arr.length, temp, index;
     while (ctr > 0) {
-// Pick a random index
         index = Math.floor(Math.random() * ctr);
-// Decrease ctr by 1
         ctr--;
-// And swap the last element with it
         temp = arr[ctr];
         arr[ctr] = arr[index];
         arr[index] = temp;
     }
     return arr;
 }
-indexes = [];
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+let quizPath = path.join(__dirname, '/Quiz.xlsx');
+if (!fs.existsSync(quizPath)) {
+    console.log(`Quiz.xlsx file not found !!!. Expected Quiz.xlsx at the location ${path.join(__dirname, '\/')}`);
+    exit(0)
+}
+  
+indexes = [];
+readXlsxFile(quizPath).then((rows) => {
 
-
-let path = '/Users/siteshpattanaik/Downloads/Test\ Quiz.xlsx';
-
-readXlsxFile(path).then((rows) => {
-    // `rows` is an array of rows
-    // each row being an array of cells.
-    rows.forEach((row,index) => {
+    rows.forEach((row, index)=> {
         indexes.push(index);
         questions.push(row[0]);
-        corr_answer.push(row[1]);
-        answers.push(row[1]);
-    });
-    // console.log("question :  " + questions);
-    // console.log("answers : " + answers);
+        correct_answers.push(row[1]);
+
+    })
     shuffle(indexes);
-    // console.log(indexes);
     len = indexes.length;
-    // console.log(len)
-    // console.log(getRandomInt(len))
+
+    indexes = indexes.slice(0,10)
     indexes.forEach((index)=> {
-        choice_arr = [];
-        choice_arr.push(corr_answer[index]);
-        for(i=0;i<=4;i++){
+        choices = [];
+        choices.push(correct_answers[index]);
+        for(i=0;i<4;i++){
             val = getRandomInt(len);
-            if (val == index) {
+            while (val == index) {
                 val = getRandomInt(len);
             }
-            choice_arr.push(corr_answer[val]);
+            choices.push(correct_answers[val]);
         }
-        shuffle(choice_arr);
-        prompt_arr.push({
+        shuffle(choices);
+        prompt_array.push({
             type:'list',
             name:questions[index],
             message:questions[index],
-            choices: choice_arr
+            choices: choices
         })
 
     })
-    inquirer.prompt(prompt_arr)
+    error_questions = {}
+    inquirer.prompt(prompt_array)
     .then(response=> {
         for(let attr in response){
             q_index = questions.indexOf(attr);
-            if (q_index==-1){
-                console.log("-1 : ", attr);
-            }
-            if (response[attr] == corr_answer[q_index]){
+            if (response[attr] == correct_answers[q_index]){
                 score++;
+            } else {
+                error_questions[questions[q_index]] = correct_answers[q_index]
             }
-            //console.log(attr + " " + response[attr]);
         }
-        console.log("\n\nSCORE " , score);
-        //console.log("options : ", response);
+        console.log("\n \uD83D\uDE00 SCORE " , score);
+        console.log("Wrong Answer")
+        console.log(error_questions)
     })
     .catch((err) => {
-        console.log("sth wrong happened");
+        console.log(err)
     })
 })    
