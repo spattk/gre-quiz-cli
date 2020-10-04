@@ -13,6 +13,8 @@ A very small utility tool to prepare for your vocabs for your GRE.
 
 ``` git clone git@github.com:spattk/gre-quiz-cli.git```
 
+```cd gre-quiz-cli```
+
 ```npm install```
 
 ```node index.js```
