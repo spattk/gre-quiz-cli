@@ -19,10 +19,10 @@ A very small utility tool to prepare for your vocabs for your GRE.
 
 If you want to have your own word list, just replace the Quiz.xlsx file with the first row being the original word and the second column as the correct meaning.
 
-then run  - ```npm index.js```
+then run  - ```node index.js```
 
 By default the quiz asks for 10 questions in one go. Want to change that ?
 
-run using the additional argument ```npm index.js <no_of question> ``` <br>
-Example: ```npm index.js 20``` <br>
+run using the additional argument ```node index.js <no_of question> ``` <br>
+Example: ```node index.js 20``` <br>
 The above will create a quiz for 20 questions.
