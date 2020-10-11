@@ -7,7 +7,7 @@ A very small utility tool to prepare for your vocabs for your GRE.
 2. cli, so don't have to open up anything.
 3. More customizations coming soon !!!
 4. Effortless
-
+5. You get to have a 300+ high frequency word list with their meanings
 
 ## Steps to run
 
